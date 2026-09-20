@@ -117,6 +117,7 @@ fi
 echo "Re-granting eval dataset ownership via SP_GRANT_EVAL_OWNERSHIP..."
 snow sql -q "CALL SV_EVAL_CICD.APP.SP_GRANT_EVAL_OWNERSHIP();" \
   --warehouse "$WAREHOUSE" 2>&1 || true
+sleep 5  # allow ownership propagation before reading scores
 
 scores_json="$(snow sql -q "
 SELECT METRIC_NAME, AVG(EVAL_AGG_SCORE) AS AVG_SCORE
