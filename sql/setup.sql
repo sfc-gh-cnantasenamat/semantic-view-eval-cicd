@@ -10,8 +10,10 @@
 --   EVAL_CONFIG_STAGE             stage for evaluation YAML
 --
 -- After this script:
---   1. Register a public key on SV_EVAL_CICD_USER (see README).
---   2. Store SNOWFLAKE_ACCOUNT / SNOWFLAKE_USER / SNOWFLAKE_PRIVATE_KEY as GitHub secrets.
+--   1. Register the OIDC workload identity subject claim on SV_EVAL_CICD_USER
+--      (ALTER USER SV_EVAL_CICD_USER SET WORKLOAD_IDENTITY = ...).
+--      See the sfguide "Configure CI Auth" section for the exact command.
+--   2. Store SNOWFLAKE_ACCOUNT as a GitHub secret (no private key needed).
 --   3. Push to main (or run the workflow) to deploy the semantic view + first agent version.
 
 USE ROLE ACCOUNTADMIN;
