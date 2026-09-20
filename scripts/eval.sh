@@ -125,8 +125,8 @@ fi
 # EXECUTE_AI_EVALUATION resets dataset ownership after each run; calling the SP
 # here (after eval completes, before reading scores) restores it so
 # GET_AI_EVALUATION_DATA returns valid results.
-echo "Re-granting eval dataset ownership via SP_RESET_EVAL_DATASETS..."
-snow sql -q "CALL ${AGENT_DB}.${AGENT_SCHEMA}.SP_RESET_EVAL_DATASETS();" \
+echo "Re-granting eval dataset ownership via SP_GRANT_EVAL_OWNERSHIP..."
+snow sql -q "CALL ${AGENT_DB}.${AGENT_SCHEMA}.SP_GRANT_EVAL_OWNERSHIP();" \
   --warehouse "$WAREHOUSE" 2>&1 || true
 
 scores_json="$(snow sql -q "

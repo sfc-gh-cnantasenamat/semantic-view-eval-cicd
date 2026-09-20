@@ -111,6 +111,13 @@ if [[ "$status" != "COMPLETED" ]]; then
   exit 1
 fi
 
+# Re-grant eval dataset ownership via the OWNER'S RIGHTS SP.
+# EXECUTE_AI_EVALUATION resets GROWTH_ANALYTICS_SYSTEM_EVAL ownership after each
+# run; calling this SP restores it so GET_ANALYST_AI_EVALUATION_DATA returns scores.
+echo "Re-granting eval dataset ownership via SP_GRANT_EVAL_OWNERSHIP..."
+snow sql -q "CALL SV_EVAL_CICD.APP.SP_GRANT_EVAL_OWNERSHIP();" \
+  --warehouse "$WAREHOUSE" 2>&1 || true
+
 scores_json="$(snow sql -q "
 SELECT METRIC_NAME, AVG(EVAL_AGG_SCORE) AS AVG_SCORE
 FROM TABLE(SNOWFLAKE.LOCAL.GET_ANALYST_AI_EVALUATION_DATA(
